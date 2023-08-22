@@ -19,9 +19,13 @@ void setup() {
 }
 
 void sendDataToAPI(const char* data) {
+  WiFiClient client;
   HTTPClient http;
 
-  http.begin(apiEndpoint);
+  // Construct the complete URL
+  String url = apiEndpoint;
+
+  http.begin(client, url);  // Use the new version of begin() with WiFiClient and URL
   http.addHeader("Content-Type", "application/json");
 
   int httpResponseCode = http.POST(data);
@@ -36,6 +40,7 @@ void sendDataToAPI(const char* data) {
   http.end();
 }
 
+
 void loop() {
   // Your code here
 
@@ -44,5 +49,5 @@ void loop() {
 
   sendDataToAPI(jsonData);
 
-  delay(5000); // Send data every 5 seconds
+  delay(5000);  // Send data every 5 seconds
 }
